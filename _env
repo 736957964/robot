@@ -1,0 +1,12 @@
+# 说明：production 意味着生产环境；development 意味着开发环境
+NODE_ENV=development
+
+# 接口请求地址
+NODE_API = http://172.16.40.246:3000/
+
+#服务标识
+#系统设置模块服务标识
+NODE_API_SYSTEM = system
+
+
+const process = require('process');
