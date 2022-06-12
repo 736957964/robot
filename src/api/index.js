@@ -3,8 +3,8 @@ const aa = require('./base/query') // 查询数据库的 api
 
 
 setTimeout(() =>{
-  aa.getTable({tableName:'user',setFieldArr:[{name:'password',value:'密码1'}]}).then((res) => {
-    console.log('sucess成功')
-  })
+  // aa.getTable({tableName:'user',setFieldArr:[{name:'password',value:'密码1'}]}).then((res) => {
+  //   console.log('sucess成功')
+  // })
 }, 1500);
 
