@@ -15,8 +15,8 @@ const playGames = async (client,data)=>{
             if(!err) {
                 let user = JSON.parse(json.toString())
                 if(!user.data[user_id]){
-                    // exp 经验 力量(物理伤害) 体质(血量) 灵巧（闪避率） 感知（抗爆率） 意志（暴击率） 魔力(魔法伤害) 生命成长(影响hp) 法力成长(影响mp) 运气（影响爆率） 速度（谁先攻击）
-                    user.data[user_id] = { exp:0,ll:1,tz:1,yz:1,ml:1,lq:1,gz:1,smcz:10,flcz:10,yq:2,sd:5 }
+                    // exp 经验 力量(物理伤害) 体质(血量) 灵巧（闪避率） 感知（抗爆率） 意志（暴击率） 魔力(魔法伤害) 生命成长(影响hp) 法力成长(影响mp) 运气（影响爆率） 速度（谁先攻击,地图移动速度）
+                    user.data[user_id] = { exp:0,ll:1,tz:1,lq:1,gz:1,yz:1,ml:1,smcz:10,flcz:10,yq:2,sd:5 ,rucksack: '0/255'}
                     let str = JSON.stringify(user)  // 把json对象转换为字符串
                     fs.writeFile(data_user, str,  (err) =>{})
                     msg = `${playJSON.enterTheWorld()}`
@@ -68,10 +68,10 @@ const playGames = async (client,data)=>{
                         if(!user.data[user_id]) {
                             msg = '无游戏记录请先【开始游戏】'
                         } else if (user.data[user_id].race){
-                            msg = `您已创建种族,无法再次创建 当前种族：${user.data[user_id].vocation} \n 【查看人物信息】 查看数据`
+                            msg = `您已创建种族,无法再次创建 当前种族：${user.data[user_id].vocation} \n 【查看人物信息】 查看人物数据`
                         }else {
                             user.data[user_id].race = user_msg
-                            msg = `你昏昏沉沉的，想起了关于自己的记忆，你是：${user.data[user_id].race}人`
+                            msg = `你昏昏沉沉的，想起了关于自己的记忆，你是：${user.data[user_id].race} 【查看人物信息】 查看人物数据`
                             playJSON.setUserData(user)
                         }
                         setMsg(msg)
@@ -103,10 +103,10 @@ const playGames = async (client,data)=>{
                         if(!user.data[user_id]) {
                             msg = '无游戏记录请先【开始游戏】'
                         } else if (user.data[user_id].vocation){
-                            msg = `您已创建职业,无法再次创建 当前职业：${user.data[user_id].vocation} \n 【查看人物信息】 查看数据`
+                            msg = `您已创建职业,无法再次创建 当前职业：${user.data[user_id].vocation} \n 【查看人物信息】 查看人物数据`
                         }else {
                             user.data[user_id].vocation = user_msg
-                            msg = `完全醒来后，你的身体记忆愈发鲜明，你想起来了自己的职业 原来是：【${user.data[user_id].vocation}】`
+                            msg = `完全醒来后，你的身体记忆愈发鲜明，你想起来了自己的职业 原来是：【${user.data[user_id].vocation}】 【查看人物信息】 查看人物数据`
                             playJSON.setUserData(user)
                         }
                         setMsg(msg)
