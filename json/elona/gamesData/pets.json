@@ -1,0 +1,18 @@
+{
+  "gl001":[
+    {"name": "莉莉姆","imgUrl": "json/elona/images/Pets/set_lilimu.png" }
+  ],
+  "gl005":[
+    {"name": "兔子","imgUrl": "json/elona/images/Pets/set_jiexika.png" }
+  ],
+  "gl015":[
+    {"name": "法尔兹","imgUrl": "json/elona/images/Pets/set_faerzi.png" },
+    {"name": "剑圣","imgUrl": "json/elona/images/Pets/set_jiansheng.png" }
+  ],
+  "gl050":[
+    {"name": "普通宠物一只","imgUrl": "json/elona/images/Pets/set_jiexika.png" }
+  ],
+  "gl100":[
+    {"name": "劣质宠物一只","imgUrl": "json/elona/images/Pets/set_liduoli.png" }
+  ]
+}

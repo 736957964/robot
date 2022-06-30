@@ -3,7 +3,7 @@ let data_user = 'json/elona/data/user.json'
 // 开始游戏
 enterTheWorld = (val)=>{
   return `
-文案：小晓辰
+文案：小尧辰
 程序：玄能救非氪能改命
 版本：测试版本 v0.0.0.01
 ￣￣￣￣￣＼进入世界(初)／￣￣￣￣￣
