@@ -21,7 +21,7 @@ const setUrl = ({method,url,sql}) =>{
       // console.log('sql=',sql(req,res))
       console.log('拿到数据',JSON.stringify(result))
       if(err){
-        res.json({mes:'查询失败',code:0})
+        res.json({mes:'查询失败',code:0,data:err})
       }else{
         res.json({mes:'查询成功',code:1,data:result})
       }

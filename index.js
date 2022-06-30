@@ -1,4 +1,4 @@
-console.log('主程序启动')
+// console.log('主程序启动')
 const dotenv = require("dotenv")
 dotenv.config() // 设置环境变量 process.env 访问
 
@@ -6,4 +6,4 @@ dotenv.config() // 设置环境变量 process.env 访问
 const apiIndex = require('./src/api/index')
 // const axios = require('./src/plugin/base/axios')
 
-const elona = require('./src/view/elona/index')
+// const elona = require('./src/view/elona/index')

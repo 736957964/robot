@@ -1,6 +1,7 @@
 
 const { AvailableIntentsEventsEnum, createOpenAPI, createWebsocket } = require('qq-guild-bot');
-const { play } = require('./data/elona')
+// const { play } = require('./data/elona')
+const { play } = require('./sqlData/elona')
 const Available = AvailableIntentsEventsEnum.PUBLIC_GUILD_MESSAGES
 const botConfig = {
     appID: '102008517', // 申请机器人时获取到的机器人 BotAppID
@@ -16,5 +17,5 @@ const ws = createWebsocket(botConfig);
 
 // 注册用户 at 机器人消息事件
 ws.on(Available, (data) => {
-    play.playGames(client,data)
+    play(client,data)
 });
