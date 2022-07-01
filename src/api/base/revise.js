@@ -4,7 +4,7 @@ const request = require('../../plugin/base/axios')
 
 const data = [
   // type 类型number, 1 原基础上赋值（如 a = a + 5） 2 特殊的sql语句 如 ' aa + 1 + bb' aa和bb字段再加1 就是值 其他则直接赋值
-  // 修改 table 表数据  {tableName:'需要修改的表名称',reviseArr:[{name:'修改的字段1'value:'赋值',type:1}]},conditionArr:[{name:'满足的条件1',value:'字段值1',formula:'',sqlValue}]}
+  // 修改 table 表数据  {tableName:'需要修改的表名称',reviseArr:[{name:'修改的字段1'value:'赋值',type:1}]},conditionArr:[{name:'满足的条件1',value:'字段值1',formula:'',sqlValue:'写sql语句 不需要value和formula了'}]}
   {  name: 'getTable',url: '/api/reviseTable', method: 'post', // get 请求拿 req.query
     sql: (req,res)=>{
       const {tableName,reviseArr,conditionArr} = req.body
@@ -22,10 +22,9 @@ const data = [
         }
       })
       conditionArr && conditionArr.forEach((res,index) =>{ // selectTable = selectTable + ' WHERE exp>=50 and ll>50 and gz>=5'
-        if(res.sqlValue === 2){ // 有sqlValue 那么 直接写sql语句  exp>=50 and ll>50 and gz>=5'
+        if(res.sqlValue){ // 有sqlValue 那么 直接写sql语句  exp>=50 and ll>50 and gz>=5'
           index === 0 ? selectTable = `${selectTable} where ${res.sqlValue}` : selectTable = `${selectTable} and ${res.sqlValue}`
         }else {
-          console.log('Jinl',index)
           const value = typeof(res.value) === 'string' ? JSON.stringify(res.value):res.value
           index === 0 ? selectTable = `${selectTable} where ${res.name}${res.formula}${value}` : selectTable = `${selectTable} and ${res.name}${res.formula}${value}`
         }
