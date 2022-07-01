@@ -5,7 +5,7 @@ const service = axios.create({
   baseURL: process.env.NODE_API === 'development' ? '/api' : process.env.NODE_API,
   timeout: 30000, // 请求超时时间
   headers:{
-    "content-type":"application/x-www-form-urlencoded"
+    'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
   }
 })
-module.exports = service
+module.exports = []
