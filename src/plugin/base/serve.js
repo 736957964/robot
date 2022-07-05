@@ -11,7 +11,16 @@ app.use(bodyParser.json())
 app.listen(3000,()=>{
   console.log('端口3000服务器启动成功')
 })
-
+// 解决跨域的问题
+app.all('*', function(req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "X-Requested-With");
+  res.header("Access-Control-Allow-Methods","PUT,POST,GET,DELETE,OPTIONS");
+  res.header('Access-Control-Allow-Headers', 'Content-Type, Content-Length, Authorization, Accept, X-Requested-With , yourHeaderFeild');
+  res.header("X-Powered-By",' 3.2.1')
+  res.header("Content-Type", "application/json;charset=utf-8");
+  next();
+});
 // 加载连接数据库的⼯具
 const connection =require('./mysql')
 
@@ -24,14 +33,27 @@ const connection =require('./mysql')
 //   console.log(req.body,'body'); // {}
 // })
 const setUrl = ({method,url,sql}) =>{
-  app[method](url,(req, res)=>{
+  app[method](url,(req, res,next)=>{
     connection.query(sql(req,res),(err, result)=>{
       // console.log('sql=',sql(req,res))
       console.log('拿到数据',JSON.stringify(result))
+      const {current,size} = req.body
       if(err){
-        res.json({mes:'查询失败',code:0,data:err})
+        // res.json({mes:'查询失败',code:0,data:err})
+        return next(err)
       }else{
-        res.json({mes:'查询成功',code:1,data:result})
+        let aa = null
+        new Promise(connection.query('select count(*) from user',(err,result)=>{
+          console.log(result,'result')
+          aa = result
+        })).then((res) => {})
+        const data = {
+          aa,
+          ...(current ? {current:current}:''),
+          ...(size ? {size:size}:''),
+          ...(current && size ? {records:result}:'')
+        }
+        res.json({mes:'查询成功',code:1,data})
       }
     })
   })

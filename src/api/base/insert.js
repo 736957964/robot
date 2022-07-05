@@ -8,10 +8,10 @@ const data = [
   {  name: 'insertTableData',url: '/api/insertTableData', method: 'post', // get 请求拿 req.query
     sql: (req,res)=>{
       const {tableName,insertArr,insertSql} = req.body
-      console.log('....')
       // console.log(JSON.stringify(req.body))
       let selectTable = `INSERT INTO ${tableName} ` // INSERT INTO user(user_id,pass_word,exp) VALUES (555,66,77);
       let figure = `VALUES `
+      console.log(selectTable + insertSql)
       if(insertSql) { return selectTable + insertSql}
       insertArr && insertArr.forEach((res,index) =>{ //
         index === 0 ? selectTable = `${selectTable}(${res.name}` : selectTable = `${selectTable},${res.name}`
