@@ -36,5 +36,12 @@ const setUrl = ({method,url,sql}) =>{
     })
   })
 }
-
-module.exports = setUrl
+const define = ({method,url,getDefine}) =>{
+  app[method](url,(req, res)=>{
+    getDefine()
+  })
+}
+const serve = {
+  setUrl,define
+}
+module.exports = serve

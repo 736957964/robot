@@ -1,9 +1,9 @@
-const setUrl = require('../../plugin/base/serve')
+const serve = require('../../plugin/base/serve')
 const request = require('../../plugin/base/axios')
 
 const data = [
   // 查询 table 表数据  {tableName:'表名称',setFieldArr:[{name:'查询的字段名称1',value:'字段值1'},{name:'查询的字段名称2',value:'字段值2'}]}
-  {  name: 'getTable',url: '/api/getTable', method: 'post', // get 请求拿 req.query
+  {  name: 'getTableData',url: '/api/getTableData', method: 'post', // get 请求拿 req.query
     sql: (req,res)=>{
       const {tableName,setFieldArr} = req.body
       console.log(JSON.stringify(req.body))
@@ -24,7 +24,7 @@ data && data.forEach((res) => {
   res.method === 'get' ?
   fn[res.name] = (data)=> {return request({url: res.url, method: res.method, params: data}) } :
   fn[res.name] = (data)=> {return request({url: res.url, method: res.method, data}) }
-  setUrl(res) // 这个是后台请求
+  serve.setUrl(res) // 这个是后台请求
 })
 module.exports = fn
 

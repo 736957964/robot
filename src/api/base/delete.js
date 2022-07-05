@@ -1,10 +1,10 @@
-const setUrl = require('../../plugin/base/serve')
+const serve = require('../../plugin/base/serve')
 const request = require('../../plugin/base/axios')
 
 const data = [
   // type 类型number, 1 原基础上赋值（如 a = a + 5） 2 特殊的sql语句 如 ' aa + 1 + bb' aa和bb字段再加1 就是值 其他则直接赋值
   // 修改 table 表数据  {tableName:'需要修改的表名称',deleteArr:[{name:'满足删除的条件1',value:'字段值1',formula:'',sqlValue:'写sql语句 不需要value和formula了'}]}
-  {  name: 'getTable',url: '/api/deleteTable', method: 'post', // get 请求拿 req.query
+  {  name: 'deleteTableData',url: '/api/deleteTableData', method: 'post', // get 请求拿 req.query
     sql: (req,res)=>{
       const {tableName,deleteArr} = req.body
       // console.log(JSON.stringify(req.body))
@@ -27,6 +27,6 @@ data && data.forEach((res) => {
   res.method === 'get' ?
     fn[res.name] = (data)=> {return request({url: res.url, method: res.method, params: data}) } :
     fn[res.name] = (data)=> {return request({url: res.url, method: res.method, data}) }
-  setUrl(res) // 这个是后台请求
+  serve.setUrl(res) // 这个是后台请求
 })
 module.exports = fn
