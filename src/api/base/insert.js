@@ -4,15 +4,14 @@ const request = require('../../plugin/base/axios')
 // VALUES (555,66,77);
 const data = [
   // type 类型number, 1 原基础上赋值（如 a = a + 5） 2 特殊的sql语句 如 ' aa + 1 + bb' aa和bb字段再加1 就是值 其他则直接赋值
-  // 修改 table 表数据  {tableName:'需要修改的表名称',insertArr:[{name:'插入条件1',value:'插入值1'}],insertSql:"(user_id,pass_word) VALUES (77,88)"}
+  // 修改 table 表数据  {tableName:'需要修改的表名称',insertArr:[{name:'插入条件1',value:'插入值1'}],sqlValue:"(user_id,pass_word) VALUES (77,88)"}
   {  name: 'insertTableData',url: '/api/insertTableData', method: 'post', // get 请求拿 req.query
     sql: (req,res)=>{
-      const {tableName,insertArr,insertSql} = req.body
+      const {tableName,insertArr,sqlValue} = req.body
       // console.log(JSON.stringify(req.body))
       let selectTable = `INSERT INTO ${tableName} ` // INSERT INTO user(user_id,pass_word,exp) VALUES (555,66,77);
       let figure = `VALUES `
-      console.log(selectTable + insertSql)
-      if(insertSql) { return selectTable + insertSql}
+      if(sqlValue) { return selectTable + sqlValue}
       insertArr && insertArr.forEach((res,index) =>{ //
         index === 0 ? selectTable = `${selectTable}(${res.name}` : selectTable = `${selectTable},${res.name}`
         index === 0 ? figure = `${figure}(${res.value}` : figure = `${figure},${res.value}`

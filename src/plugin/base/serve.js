@@ -36,24 +36,42 @@ const setUrl = ({method,url,sql}) =>{
   app[method](url,(req, res,next)=>{
     connection.query(sql(req,res),(err, result)=>{
       // console.log('sql=',sql(req,res))
-      console.log('拿到数据',JSON.stringify(result))
-      const {current,size} = req.body
+      // console.log('拿到数据',JSON.stringify(result))
+      let {current,size,tableName,setFieldArr,sqlValue} = req.body
+      current ? current = JSON.parse(current) : ''
+      size ? size = JSON.parse(size) : ''
       if(err){
         // res.json({mes:'查询失败',code:0,data:err})
         return next(err)
       }else{
-        let aa = null
-        new Promise(connection.query('select count(*) from user',(err,result)=>{
-          console.log(result,'result')
-          aa = result
-        })).then((res) => {})
-        const data = {
-          aa,
-          ...(current ? {current:current}:''),
+        let data = {
+          ...(current ? {current}:''),
           ...(size ? {size:size}:''),
           ...(current && size ? {records:result}:'')
         }
-        res.json({mes:'查询成功',code:1,data})
+        if( current && size) {
+          new Promise((count)=>{
+            let selectTable = `select count(*) from ${tableName}`
+            let whereField = ` where `
+             if(sqlValue) { // 有sql直接sql
+                selectTable =  selectTable + sqlValue
+              } else {
+               setFieldArr && setFieldArr.forEach((res,index) => { // select * from user where act_index=2 and `password` = 'XXX'
+                 const value = typeof(res.value) === 'string' ? JSON.stringify(res.value):res.value
+                 index === 0 ? whereField = `${whereField}${res.name} = ${value}` : whereField = `${whereField} and ${res.name} = ${value}`
+               })
+               if(setFieldArr) { selectTable = selectTable +  whereField}
+             }
+            connection.query(selectTable,(err,result)=>{
+              count(result)
+            })
+          }).then((total) => {
+            data.total = total[0]['count(*)']
+            res.json({mes:'查询成功',code:1,data})
+          }).catch((err) => {  console.log(err,'err') })
+        } else {
+          res.json({mes:'查询成功',code:1,data})
+        }
       }
     })
   })

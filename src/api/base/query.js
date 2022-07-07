@@ -2,18 +2,22 @@ const serve = require('../../plugin/base/serve')
 const request = require('../../plugin/base/axios')
 
 const data = [
-  // 查询 table 表数据  {tableName:'表名称',setFieldArr:[{name:'查询的字段名称1',value:'字段值1'},{name:'查询的字段名称2',value:'字段值2'}]}
+  // 查询 table 表数据  {tableName:'表名称',setFieldArr:[{name:'查询的字段名称1',value:'字段值1'},{name:'查询的字段名称2',value:'字段值2'}],sqlValue:'写sql语句 不需要setFieldArr了'}}
   {  name: 'getTableData',url: '/api/getTableData', method: 'post', // get 请求拿 req.query
     sql: (req,res)=>{
-      const {tableName,setFieldArr,current,size} = req.body
-      console.log(JSON.stringify(req.body))
+      const {tableName,setFieldArr,current,size,sqlValue} = req.body
+      // console.log(JSON.stringify(req.body))
       let selectTable = `select * from ${tableName}` // select * from user
       let whereField = ` where `
-      setFieldArr && setFieldArr.forEach((res,index) => { // select * from user where act_index=2 and `password` = 'XXX'
-        const value = typeof(res.value) === 'string' ? JSON.stringify(res.value):res.value
-        index === 0 ? whereField = `${whereField}${res.name} = ${value}` : whereField = `${whereField} and ${res.name} = ${value}`
-      })
-      if(setFieldArr) { selectTable = selectTable +  whereField} // 有额外的筛选条件
+      if(sqlValue) { // 有sql直接sql 后面在处理分页
+        selectTable =  selectTable + sqlValue
+      } else {
+        setFieldArr && setFieldArr.forEach((res,index) => { // select * from user where act_index=2 and `password` = 'XXX'
+          const value = typeof(res.value) === 'string' ? JSON.stringify(res.value):res.value
+          index === 0 ? whereField = `${whereField}${res.name} = ${value}` : whereField = `${whereField} and ${res.name} = ${value}`
+        })
+        if(setFieldArr) { selectTable = selectTable +  whereField} // 有额外的筛选条件
+      }
       if(current && size) { selectTable =  `${selectTable} limit ${(current-1)*size},${current*size}`} // 分页的情况查询
       return selectTable
     }
