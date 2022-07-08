@@ -35,7 +35,7 @@ const connection =require('./mysql')
 const setUrl = ({method,url,sql}) =>{
   app[method](url,(req, res,next)=>{
     connection.query(sql(req,res),(err, result)=>{
-      // console.log('sql=',sql(req,res))
+      console.log('sql=',sql(req,res))
       // console.log('拿到数据',JSON.stringify(result))
       let {current,size,tableName,setFieldArr,sqlValue} = req.body
       current ? current = JSON.parse(current) : ''
