@@ -32,12 +32,14 @@ const connection =require('./mysql')
 // app.post('/api/login',async (req, res, next) => {
 //   console.log(req.body,'body'); // {}
 // })
+
+// 通用逻辑
 const setUrl = ({method,url,sql}) =>{
   app[method](url,(req, res,next)=>{
     connection.query(sql(req,res),(err, result)=>{
       console.log('sql=',sql(req,res))
       // console.log('拿到数据',JSON.stringify(result))
-      let {current,size,tableName,setFieldArr,sqlValue} = req.body
+      let {current,size,tableName,setFieldArr,sqlValue,type} = req.body
       current ? current = JSON.parse(current) : ''
       size ? size = JSON.parse(size) : ''
       if(err){
@@ -70,8 +72,20 @@ const setUrl = ({method,url,sql}) =>{
             res.json({mes:'查询成功',code:1,data})
           }).catch((err) => {  console.log(err,'err') })
         } else {
-          res.json({mes:'查询成功',code:1,data})
+          type === 'first' ? res.json({mes:'查询成功',code:1,data:result[0] || result}) : res.json({mes:'查询成功',code:1,data:result})
         }
+      }
+    })
+  })
+}
+// 自己处理逻辑
+const setUrl2 = ({method,url,sql,sqlValue}) =>{
+  app[method](url,(req, res,next)=>{
+    connection.query(sql(req,res),(err, result)=>{
+      if(err){
+        return next(err)
+      }else{
+        sqlValue(res,result)
       }
     })
   })
@@ -82,6 +96,6 @@ const define = ({method,url,getDefine}) =>{
   })
 }
 const serve = {
-  setUrl,define
+  setUrl,define,setUrl2
 }
 module.exports = serve

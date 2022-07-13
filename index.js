@@ -6,4 +6,4 @@ dotenv.config() // 设置环境变量 process.env 访问
 const apiIndex = require('./src/api/index')
 // const axios = require('./src/plugin/base/axios')
 
-// const elona = require('./src/view/elona/index')
+const elona = require('./src/view/elona/index')

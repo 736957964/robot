@@ -2,26 +2,27 @@ const serve = require('../../plugin/base/serve')
 const request = require('../../plugin/base/axios')
 
 const data = [
-  {  name: 'getTableData',url: '/api/getTableData', method: 'get', // get 请求拿 req.query
+  {  name: 'getTableData_get',url: '/api/getTableData', method: 'get', // get 请求拿 req.query
     sql: (req,res)=>{
-      const {tableName,sqlValue} = req.query
+      const {tableName,sqlValue,current,size} = req.query
       // console.log(JSON.stringify(req.body))
       let selectTable = `select * from ${tableName}` // select * from user
       if(sqlValue) { // 有sql直接sql 后面在处理分页
-        selectTable =  selectTable + sqlValue
+        selectTable =  `${selectTable} where ${sqlValue}`
       }
+      if(current && size) { selectTable =  `${selectTable} limit ${(current-1)*size},${current*size}`} // 分页的情况查询
       return selectTable
     }
   },
   // 查询 table 表数据  {tableName:'表名称',setFieldArr:[{name:'查询的字段名称1',value:'字段值1'},{name:'查询的字段名称2',value:'字段值2'}],sqlValue:'写sql语句 不需要setFieldArr了'}}
-  {  name: 'getTableData',url: '/api/getTableData', method: 'post', // get 请求拿 req.query
+  {  name: 'getTableData_post',url: '/api/getTableData', method: 'post', // get 请求拿 req.query
     sql: (req,res)=>{
       const {tableName,setFieldArr,current,size,sqlValue} = req.body
       // console.log(JSON.stringify(req.body))
       let selectTable = `select * from ${tableName}` // select * from user
       let whereField = ` where `
       if(sqlValue) { // 有sql直接sql 后面在处理分页
-        selectTable =  selectTable + sqlValue
+        selectTable =  selectTable + whereField + sqlValue
       } else {
         setFieldArr && setFieldArr.forEach((res,index) => { // select * from user where act_index=2 and `password` = 'XXX'
           const value = typeof(res.value) === 'string' ? JSON.stringify(res.value):res.value
