@@ -21,6 +21,24 @@ const playGames = async (client,data,commandData)=>{
             client.messageApi.postMessage(channel_id, msgData)
             break
           case '2':
+           if(command === '/开始游戏'){
+             console.log(jsEval,'jsEval')
+             data.user= []
+             eval(jsEval)
+             let insertKey = ['user_id','pass_word']
+             const keys = Object.keys(data.user)
+             insertKey = insertKey.concat(keys).join(',')
+             let insertValue = `'${user_id}','123456'`
+             for(let i=0;i<keys.length;i++){
+               insertValue = `${insertValue},${data.user[keys[i]]}`
+             }
+             const insertSql = `INSERT INTO user(${insertKey}) VALUES (${insertValue});`
+             console.log(insertSql)
+             connection.query(insertSql, (err, result)=>{
+                console.log(err, result)
+             })
+             return
+           }
             let QUERY_TABLE_ARR = QUERY_TABLE.split(',')
             new Promise((resolve,reject) =>{
               for(let i=0;i<QUERY_TABLE_ARR.length;i++){
